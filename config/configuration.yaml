@@ -1,0 +1,26 @@
+
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+logger:
+  default: info
+  logs:
+    homeassistant.components.cloud: debug
+
+sensor:
+  - platform: example_load_platform1
+    name: abcd
+    value: 233.33
+
+hachina_example1:
+  name: hachina
+  value: 积木构建智慧空间
+
