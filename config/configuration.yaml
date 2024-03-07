@@ -24,3 +24,7 @@ hachina_example1:
   name: hachina
   value: 积木构建智慧空间
 
+ha_iot_platform:
+  name: haiotplatform
+  value: 物联网平台测试插件
+

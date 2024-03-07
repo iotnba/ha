@@ -1,0 +1,10 @@
+{
+  "domain": "ha_iot_platform",
+  "name": "Custom Ha Iot Platform Proxy",
+  "codeowners": [],
+  "dependencies": [],
+  "documentation": "https://abc.abc",
+  "iot_class": "cloud_push",
+  "requirements": [],
+  "version": "0.1.0"
+}
