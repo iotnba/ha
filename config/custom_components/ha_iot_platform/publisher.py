@@ -7,8 +7,7 @@
 # python 3.6
 import random
 import time
-import generator_signature
-
+from . import generator_signature
 from paho.mqtt import client as mqtt_client
 
 # 免费的Broker
@@ -36,17 +35,16 @@ def connect_mqtt(config, client_id):
     resourcename = config.get("resourcename")
     accessKey = config.get("accessKey")
 
-    password = generator_signature.assemble_token(
-        version,
-        resourcename,
-    )
+    mqtt_password = generator_signature.assemble_token(version, resourcename, accessKey)
 
     client = mqtt_client.Client(
-        mqtt_client.CallbackAPIVersion.VERSION1, client_id
+        mqtt_client.CallbackAPIVersion.VERSION1, mqtt_client_id
     )  # 实例化对象
     client.on_connect = (
         on_connect  # 设定回调函数，当Broker响应连接时，就会执行给定的函数
     )
+    # 设置用户名和密码
+    client.username_pw_set(username=mqtt_username, password=mqtt_password)
     client.connect(broker, port)  # 连接
     return client
 
