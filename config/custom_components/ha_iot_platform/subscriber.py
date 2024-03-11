@@ -49,9 +49,9 @@ def subscribe(client):
         # result: [0, 1]
         status = result[0]  # 解析响应内容
         if status == 0:  # 发送成功
-            print(f"Send `{msg}` to topic `{topic}`")
+            print(f"Send `{msg}` to topic `{pubTopic}`")
         else:  # 发送失败
-            print(f"Failed to send message to topic {topic}")
+            print(f"Failed to send message to topic {pubTopic}")
 
     client.subscribe(topic)
     client.on_message = on_message
