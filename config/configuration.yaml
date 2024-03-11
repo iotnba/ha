@@ -27,4 +27,11 @@ hachina_example1:
 ha_iot_platform:
   name: haiotplatform
   value: 物联网平台测试插件
+  mqtt_client_id: chengyan001
+  mqtt_username: OSTx26punO
+  version: 2018-10-31
+  resourcename: products/busWj5awEQ/devices/chengyan_switch1
+  accessKey: 3tOf4Gr6toXXMFMsVH2ZZzRIM1zQ5K36aXrvxsE=
+  mqtt_broker: 82.3.12.168
+  mqtt_port: 30662
 
