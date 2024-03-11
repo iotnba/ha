@@ -44,7 +44,7 @@ class HaIotPlatform:
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """The init entry for HA."""
-    hip = HaIotPlatform(connect_mqtt(client_id))
+    hip = HaIotPlatform(connect_mqtt(config, client_id))
 
     # listen to events
     hass.bus.async_listen(MATCH_ALL, hip.handle_ha_event)
