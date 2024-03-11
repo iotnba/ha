@@ -31,15 +31,19 @@ class HaIotPlatform:
         self.publisher.loop_start()  # 新线程loop
 
     async def handle_ha_event(self, event: Event) -> None:
-        _LOGGER.warning("test!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        msg = {"id": "1000", "version": "1.0", "params": {"DeviceNum": {"value": 1}}}
-        result = self.publisher.publish(topic, msg)  # 指定信息的tpoic和信息内容，并发送
-        # result: [0, 1]
-        status = result[0]  # 解析响应内容
-        if status == 0:  # 发送成功
-            print(f"Send `{msg}` to topic `{topic}`")
-        else:  # 发送失败
-            print(f"Failed to send message to topic {topic}")
+        try:
+            _LOGGER.warning("test!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            msg = {"id": "1000", "version": "1.0", "params": {"DeviceNum": {"value": 1}}}
+            result = self.publisher.publish(topic, msg)  # 指定信息的tpoic和信息内容，并发送
+            # result: [0, 1]
+            status = result[0]  # 解析响应内容
+            if status == 0:  # 发送成功
+                print(f"Send `{msg}` to topic `{topic}`")
+            else:  # 发送失败
+                print(f"Failed to send message to topic {topic}")
+        except Exception as e:
+            logging.error("handle ha event error!!!!!!!!!!")
+            raise e
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:

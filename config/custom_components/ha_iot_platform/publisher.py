@@ -5,7 +5,7 @@
 # @desc :
 
 # python 3.6
-import random
+import logging
 import time
 from . import generator_signature
 from paho.mqtt import client as mqtt_client
@@ -16,6 +16,8 @@ port = 1883
 
 client_id = "yyw_test_publisher"  # 设定唯一设备号，不设则mqtt随机生成
 topic = "yyw_test_mqtt"  # 自定义一个Topic
+
+_LOGGER = logging.getLogger()
 
 
 # 连接函数
@@ -28,25 +30,29 @@ def connect_mqtt(config, client_id):
         else:
             print("Failed to connect, return code %d\n", rc)
 
-    # 读取配置文件
-    mqtt_client_id = config.get("mqtt_client_id")
-    mqtt_username = config.get("mqtt_username")
-    version = config.get("version")
-    resourcename = config.get("resourcename")
-    accessKey = config.get("accessKey")
+    try:
+        # 读取配置文件
+        mqtt_client_id = config.get("mqtt_client_id")
+        mqtt_username = config.get("mqtt_username")
+        version = config.get("version")
+        resourcename = config.get("resourcename")
+        accessKey = config.get("accessKey")
 
-    mqtt_password = generator_signature.assemble_token(version, resourcename, accessKey)
+        mqtt_password = generator_signature.assemble_token(version, resourcename, accessKey)
 
-    client = mqtt_client.Client(
-        mqtt_client.CallbackAPIVersion.VERSION1, mqtt_client_id
-    )  # 实例化对象
-    client.on_connect = (
-        on_connect  # 设定回调函数，当Broker响应连接时，就会执行给定的函数
-    )
-    # 设置用户名和密码
-    client.username_pw_set(username=mqtt_username, password=mqtt_password)
-    client.connect(broker, port)  # 连接
-    return client
+        client = mqtt_client.Client(
+            mqtt_client.CallbackAPIVersion.VERSION1, mqtt_client_id
+        )  # 实例化对象
+        client.on_connect = (
+            on_connect  # 设定回调函数，当Broker响应连接时，就会执行给定的函数
+        )
+        # 设置用户名和密码
+        client.username_pw_set(username=mqtt_username, password=mqtt_password)
+        client.connect(broker, port)  # 连接
+        return client
+    except Exception as e:
+        logging.error("mqtt connect error!!!!!!!!!!")
+        raise e
 
 
 # 定义发送信息的函数
