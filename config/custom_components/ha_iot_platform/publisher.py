@@ -37,7 +37,8 @@ def connect_mqtt(config, client_id):
         version = config.get("version")
         resourcename = config.get("resourcename")
         accessKey = config.get("accessKey")
-
+        mqtt_port = config.get("mqtt_port")
+        mqtt_broker = config.get("mqtt_broker")
         mqtt_password = generator_signature.assemble_token(
             version, resourcename, accessKey
         )
@@ -50,7 +51,7 @@ def connect_mqtt(config, client_id):
         )
         # 设置用户名和密码
         client.username_pw_set(username=mqtt_username, password=mqtt_password)
-        client.connect(broker, port)  # 连接
+        client.connect(mqtt_broker, mqtt_port)  # 连接
         return client
     except Exception as e:
         logging.error("mqtt connect error!!!!!!!!!!")
