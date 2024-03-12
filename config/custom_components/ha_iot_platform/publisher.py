@@ -55,6 +55,7 @@ def connect_mqtt(config, client_id):
         return client
     except Exception as e:
         logging.error("mqtt connect error!!!!!!!!!!")
+        logging.error(e)
         raise e
 
 

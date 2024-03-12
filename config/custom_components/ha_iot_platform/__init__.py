@@ -45,6 +45,7 @@ class HaIotPlatform:
             )  # 指定信息的tpoic和信息内容，并发送
             # result: [0, 1]
             status = result[0]  # 解析响应内容
+            logging.warn(result)
             if status == 0:  # 发送成功
                 print(f"Send `{msg}` to topic `{topic}`")
             else:  # 发送失败
@@ -58,10 +59,14 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """The init entry for HA."""
     conf = config.get(DOMAIN)
     logging.error("mqtt_client_id" + conf.get("mqtt_client_id"))
-    hip = HaIotPlatform(connect_mqtt(conf, client_id))
+    try:
+        hip = HaIotPlatform(connect_mqtt(conf, client_id))
 
-    # listen to events
-    hass.bus.async_listen(MATCH_ALL, hip.handle_ha_event)
-
+        # listen to events
+        hass.bus.async_listen(MATCH_ALL, hip.handle_ha_event)
+    except Exception as e:
+        logging.error("async_setup error!!!!!!!!!!")
+        logging.error(e)
+        raise e
     # Return boolean to indicate that initialization was successfully.
     return True
