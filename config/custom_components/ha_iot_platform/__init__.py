@@ -2,7 +2,7 @@
 ha对接物联网平台测试插件
 """
 import logging
-
+import json
 from homeassistant.const import MATCH_ALL
 from homeassistant.core import (
     HomeAssistant,
@@ -32,9 +32,17 @@ class HaIotPlatform:
 
     async def handle_ha_event(self, event: Event) -> None:
         try:
-            _LOGGER.warning("test!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            msg = {"id": "1000", "version": "1.0", "params": {"DeviceNum": {"value": 1}}}
-            result = self.publisher.publish(topic, msg)  # 指定信息的tpoic和信息内容，并发送
+            # 将事件对象转换为字典
+            event_dict = event.as_dict()
+            _LOGGER.warning("handEvent: %s", str(event_dict))
+            msg = """{
+                "id": "1000",
+                "version": "1.0",
+                "params": {"DeviceNum": {"value": 1}},
+            }"""
+            result = self.publisher.publish(
+                topic, msg
+            )  # 指定信息的tpoic和信息内容，并发送
             # result: [0, 1]
             status = result[0]  # 解析响应内容
             if status == 0:  # 发送成功
@@ -48,7 +56,9 @@ class HaIotPlatform:
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """The init entry for HA."""
-    hip = HaIotPlatform(connect_mqtt(config, client_id))
+    conf = config.get(DOMAIN)
+    logging.error("mqtt_client_id" + conf.get("mqtt_client_id"))
+    hip = HaIotPlatform(connect_mqtt(conf, client_id))
 
     # listen to events
     hass.bus.async_listen(MATCH_ALL, hip.handle_ha_event)

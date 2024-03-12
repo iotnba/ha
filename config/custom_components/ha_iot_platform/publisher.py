@@ -26,9 +26,9 @@ def connect_mqtt(config, client_id):
         # flags是一个包含代理回复的标志的字典；
         # rc的值决定了连接成功或者不成功（0为成功）
         if rc == 0:
-            print("Connected to MQTT Broker!")
+            logging.error("Connected to MQTT Broker!")
         else:
-            print("Failed to connect, return code %d\n", rc)
+            logging.error("Failed to connect, return code %d\n", rc)
 
     try:
         # 读取配置文件
@@ -38,7 +38,9 @@ def connect_mqtt(config, client_id):
         resourcename = config.get("resourcename")
         accessKey = config.get("accessKey")
 
-        mqtt_password = generator_signature.assemble_token(version, resourcename, accessKey)
+        mqtt_password = generator_signature.assemble_token(
+            version, resourcename, accessKey
+        )
 
         client = mqtt_client.Client(
             mqtt_client.CallbackAPIVersion.VERSION1, mqtt_client_id

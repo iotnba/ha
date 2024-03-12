@@ -25,7 +25,7 @@ def assemble_token(version, resource_name, access_key):
         safe="",
     )
 
-    return f"version={version}&res={res}&et={expiration_time}&method={signature_method}&sign={sig}"
+    return f"version={version}&res={res}&et={epoch_second}&method={signature_method}&sign={sig}"
 
 
 def generator_signature(
