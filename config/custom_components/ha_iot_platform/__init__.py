@@ -29,6 +29,7 @@ class HaIotPlatform:
     def __init__(self, publisher):
         self.publisher = publisher
         self.publisher.loop_start()  # 新线程loop
+        _LOGGER.warn("----------------------------新线程loop")
 
     async def handle_ha_event(self, event: Event) -> None:
         try:

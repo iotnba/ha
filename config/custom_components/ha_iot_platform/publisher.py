@@ -7,6 +7,7 @@
 # python 3.6
 import logging
 import time
+import ssl
 from . import generator_signature
 from paho.mqtt import client as mqtt_client
 
@@ -26,9 +27,11 @@ def connect_mqtt(config, client_id):
         # flags是一个包含代理回复的标志的字典；
         # rc的值决定了连接成功或者不成功（0为成功）
         if rc == 0:
-            logging.error("Connected to MQTT Broker!")
+            logging.error("--------------------------Connected to MQTT Broker!")
         else:
-            logging.error("Failed to connect, return code %d\n", rc)
+            logging.error(
+                "--------------------------Failed to connect, return code %d\n", rc
+            )
 
     try:
         # 读取配置文件
@@ -43,14 +46,13 @@ def connect_mqtt(config, client_id):
             version, resourcename, accessKey
         )
 
-        client = mqtt_client.Client(
-            mqtt_client.CallbackAPIVersion.VERSION1, mqtt_client_id
-        )  # 实例化对象
+        client = mqtt_client.Client(mqtt_client_id)  # 实例化对象
         client.on_connect = (
             on_connect  # 设定回调函数，当Broker响应连接时，就会执行给定的函数
         )
         # 设置用户名和密码
         client.username_pw_set(username=mqtt_username, password=mqtt_password)
+        client.tls_set(cert_reqs=ssl.CERT_NONE)
         client.connect(mqtt_broker, mqtt_port)  # 连接
         return client
     except Exception as e:
