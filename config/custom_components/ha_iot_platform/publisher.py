@@ -46,7 +46,7 @@ def connect_mqtt(config, client_id):
             version, resourcename, accessKey
         )
 
-        client = mqtt_client.Client(mqtt_client_id)  # 实例化对象
+        client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION1, mqtt_client_id)  # 实例化对象
         client.on_connect = (
             on_connect  # 设定回调函数，当Broker响应连接时，就会执行给定的函数
         )
