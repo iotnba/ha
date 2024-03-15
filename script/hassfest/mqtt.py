@@ -26,7 +26,7 @@ def generate_and_validate(integrations: dict[str, Integration]) -> str:
 
 def validate(integrations: dict[str, Integration], config: Config) -> None:
     """Validate MQTT file."""
-    mqtt_path = config.root / "homeassistant/generated/mqtt.py"
+    mqtt_path = config.root / "homeassistant/generated/mqtt_util.py"
     config.cache["mqtt"] = content = generate_and_validate(integrations)
 
     if config.specific_integrations:
@@ -36,13 +36,13 @@ def validate(integrations: dict[str, Integration], config: Config) -> None:
         if fp.read() != content:
             config.add_error(
                 "mqtt",
-                "File mqtt.py is not up to date. Run python3 -m script.hassfest",
+                "File mqtt_util.py is not up to date. Run python3 -m script.hassfest",
                 fixable=True,
             )
 
 
 def generate(integrations: dict[str, Integration], config: Config) -> None:
     """Generate MQTT file."""
-    mqtt_path = config.root / "homeassistant/generated/mqtt.py"
+    mqtt_path = config.root / "homeassistant/generated/mqtt_util.py"
     with open(str(mqtt_path), "w") as fp:
         fp.write(f"{config.cache['mqtt']}")

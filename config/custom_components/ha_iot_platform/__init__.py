@@ -9,7 +9,7 @@ from homeassistant.core import (
 )
 from homeassistant.helpers.typing import ConfigType
 
-from .MQTT import connect_mqtt
+from .mqtt_util import connect_mqtt
 
 
 # The domain of your component. Should be equal to the name of your component.
