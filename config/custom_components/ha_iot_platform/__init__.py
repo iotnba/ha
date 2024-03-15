@@ -2,7 +2,6 @@
 ha对接物联网平台测试插件
 """
 import logging
-import json
 from homeassistant.const import MATCH_ALL
 from homeassistant.core import (
     HomeAssistant,
@@ -10,7 +9,7 @@ from homeassistant.core import (
 )
 from homeassistant.helpers.typing import ConfigType
 
-from .publisher import connect_mqtt
+from .MQTT import connect_mqtt
 
 
 # The domain of your component. Should be equal to the name of your component.
@@ -19,7 +18,6 @@ DOMAIN = "ha_iot_platform"
 # HA的restful服务地址，除非自定义了端口，一般不用改
 HA_REST_URL = "http://127.0.0.1:8123"
 
-client_id = "yyw_test_publisher"  # 设定唯一设备号，不设则mqtt随机生成
 topic = "$sys/OSTx26punO/chengyan001/thing/property/post"  # 自定义一个Topic
 
 _LOGGER = logging.getLogger()
@@ -61,12 +59,12 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     conf = config.get(DOMAIN)
     logging.error("mqtt_client_id" + conf.get("mqtt_client_id"))
     try:
-        hip = HaIotPlatform(connect_mqtt(conf, client_id))
+        hip = HaIotPlatform(connect_mqtt(conf))
 
         # listen to events
         hass.bus.async_listen(MATCH_ALL, hip.handle_ha_event)
     except Exception as e:
-        logging.error("async_setup error!!!!!!!!!!")
+        logging.error("-----------------async_setup error!!!!!!!!!!")
         logging.error(e)
         raise e
     # Return boolean to indicate that initialization was successfully.
