@@ -23,10 +23,12 @@ _LOGGER = logging.getLogger()
 def connect_mqtt(config):
     def on_message(client, userdata, msg):
         print(f"Received `{msg.payload.decode()}` from `{msg.topic}` topic")
-        _LOGGER.error(f"--------------------Received `{msg.payload.decode()}` from `{msg.topic}` topic")
+        _LOGGER.error(
+            f"--------------------Received `{msg.payload.decode()}` from `{msg.topic}` topic"
+        )
 
         # 先解析出id
-        data = json.load(msg.payload.decode("utf-8"))
+        data = json.loads(msg.payload.decode())
         id = data["id"]
         # ha收到物联网平台的下方消息 再次回复 现在是写死的
         pubMsg = returnMsg.format(id=id)
@@ -63,7 +65,9 @@ def connect_mqtt(config):
             version, resourcename, accessKey
         )
 
-        client = mqtt_client.Client(mqtt_client.CallbackAPIVersion.VERSION1, mqtt_client_id)  # 实例化对象
+        client = mqtt_client.Client(
+            mqtt_client.CallbackAPIVersion.VERSION1, mqtt_client_id
+        )  # 实例化对象
         client.on_connect = (
             on_connect  # 设定回调函数，当Broker响应连接时，就会执行给定的函数
         )
