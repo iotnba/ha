@@ -14,8 +14,8 @@ from paho.mqtt import client as mqtt_client
 
 subTopic = "$sys/OSTx26punO/chengyan001/thing/property/set"  # 自定义一个Topic(网关属性设置订阅)
 pubTopic = "$sys/OSTx26punO/chengyan001/thing/property/set_reply"  # 自定义一个Topic(网关属性设置响应)
-returnMsg = '{"id": "{id}", "code": 200, "msg": "success"}'
-
+returnMsg = '{"id": "'
+returnMsg2 = '", "code": 200, "msg": "success"}'
 _LOGGER = logging.getLogger()
 
 
@@ -31,12 +31,12 @@ def connect_mqtt(config):
         data = json.loads(msg.payload.decode())
         id = data["id"]
         # ha收到物联网平台的下方消息 再次回复 现在是写死的
-        pubMsg = returnMsg.format(id=id)
+        pubMsg = returnMsg + id + returnMsg2
         result = client.publish(pubTopic, pubMsg)  # 指定信息的tpoic和信息内容，并发送
         # result: [0, 1]
         status = result[0]  # 解析响应内容
         if status == 0:  # 发送成功
-            print(f"Send `{msg}` to topic `{pubTopic}`")
+            print(f"Send `{pubMsg}` to topic `{pubTopic}`")
         else:  # 发送失败
             print(f"Failed to send message to topic {pubTopic}")
 
