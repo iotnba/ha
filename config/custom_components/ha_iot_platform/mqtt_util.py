@@ -14,7 +14,7 @@ from paho.mqtt import client as mqtt_client
 
 subTopic = "$sys/OSTx26punO/chengyan001/thing/property/set"  # 自定义一个Topic(网关属性设置订阅)
 pubTopic = "$sys/OSTx26punO/chengyan001/thing/property/set_reply"  # 自定义一个Topic(网关属性设置响应)
-returnMsg = {"id": "{id}", "code": 200, "msg": "success"}
+returnMsg = '{"id": "{id}", "code": 200, "msg": "success"}'
 
 _LOGGER = logging.getLogger()
 
